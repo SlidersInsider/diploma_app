@@ -16,4 +16,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "DiplomaApp"
 include(":app")
- 
+include(":network")
+include(":reader")
