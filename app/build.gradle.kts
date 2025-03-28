@@ -44,4 +44,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
+
+    api(project(":network"))
+    api(project(":reader"))
 }
