@@ -1,6 +1,10 @@
 package com.mzhadan.app.network.di
 
+import com.mzhadan.app.network.api.FilesApi
+import com.mzhadan.app.network.api.ProjectsApi
+import com.mzhadan.app.network.api.RolesApi
 import com.mzhadan.app.network.api.UsersApi
+import com.mzhadan.app.network.api.UsersProjectsApi
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -49,5 +53,29 @@ class NetworkModule {
     @Singleton
     fun provideUsersApi(retrofit: Retrofit): UsersApi {
         return retrofit.create(UsersApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProjectsApi(retrofit: Retrofit): ProjectsApi {
+        return retrofit.create(ProjectsApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFilesApi(retrofit: Retrofit): FilesApi {
+        return retrofit.create(FilesApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRolesApi(retrofit: Retrofit): RolesApi {
+        return retrofit.create(RolesApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUsersProjectsApi(retrofit: Retrofit): UsersProjectsApi {
+        return retrofit.create(UsersProjectsApi::class.java)
     }
 }
