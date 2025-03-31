@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
 }
 
@@ -44,6 +45,13 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
+
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.coroutines.android)
+    implementation(libs.coroutines.core)
+
+    api(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     api(project(":network"))
     api(project(":reader"))
