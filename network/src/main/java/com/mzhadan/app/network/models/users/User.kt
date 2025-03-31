@@ -5,7 +5,3 @@ data class User(
     val password: String,
     val role: String
 )
-
-data class RoleModel(
-    val name: String
-)

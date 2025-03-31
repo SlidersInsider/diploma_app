@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getAllUsers()
         viewModel.getAllProjects()
+        viewModel.getAllRoles()
 
         viewModel.users.observe(this) { users ->
             users.forEach {
@@ -29,6 +30,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.projects.observe(this) { projects ->
             projects.forEach {
                 Log.d("Project", "ID: ${it.id}, Name: ${it.name}, Description: ${it.description}")
+            }
+        }
+
+        viewModel.roles.observe(this) { roles ->
+            roles.forEach {
+                Log.d("Role", "ID: ${it.id}, Name: ${it.name}")
             }
         }
     }
