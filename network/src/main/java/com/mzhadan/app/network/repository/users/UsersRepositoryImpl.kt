@@ -7,12 +7,11 @@ import com.mzhadan.app.network.models.users.User
 import com.mzhadan.app.network.models.users.UserResponse
 import retrofit2.Response
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class UsersRepositoryImpl @Inject constructor(
     private val usersApi: UsersApi
 ) : UsersRepository {
-    override suspend fun getAllUsers(): Response<List<UserResponse>> {
+    override suspend fun getUsers(): Response<List<UserResponse>> {
         return usersApi.getUsers()
     }
 

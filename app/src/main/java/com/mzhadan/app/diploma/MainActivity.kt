@@ -18,10 +18,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel.getAllUsers()
+        viewModel.getAllProjects()
 
         viewModel.users.observe(this) { users ->
             users.forEach {
                 Log.d("User", "ID: ${it.id}, Name: ${it.username}, Role: ${it.role}")
+            }
+        }
+
+        viewModel.projects.observe(this) { projects ->
+            projects.forEach {
+                Log.d("Project", "ID: ${it.id}, Name: ${it.name}, Description: ${it.description}")
             }
         }
     }
