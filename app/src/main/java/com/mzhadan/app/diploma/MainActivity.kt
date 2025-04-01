@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.getAllProjects()
         viewModel.getAllRoles()
         viewModel.getAllUsersFromProject(3)
+        viewModel.getAllFiles()
 
         viewModel.users.observe(this) { users ->
             users.forEach {
@@ -44,6 +45,12 @@ class MainActivity : AppCompatActivity() {
             Log.d("Project", "Name: ${up.project}")
             up.users.forEach {
                 Log.d("User", "ID: ${it.id}, Name: ${it.username}")
+            }
+        }
+
+        viewModel.files.observe(this) { files ->
+            files.forEach {
+                Log.d("File", "ID: ${it.id}, Name: ${it.filename}, Path: ${it.file_path}, ProjectId: ${it.project_id}")
             }
         }
     }

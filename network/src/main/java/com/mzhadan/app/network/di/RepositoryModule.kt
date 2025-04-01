@@ -38,12 +38,6 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideFilesRepository(filesApi: FilesApi): FilesRepository {
-        return FilesRepositoryImpl(filesApi)
-    }
-
-    @Provides
-    @Singleton
     fun provideRolesRepository(rolesApi: RolesApi): RolesRepository {
         return RolesRepositoryImpl(rolesApi)
     }
@@ -52,5 +46,11 @@ class RepositoryModule {
     @Singleton
     fun provideUsersProjectsRepository(usersProjectsApi: UsersProjectsApi): UsersProjectsRepository {
         return UsersProjectsRepositoryImpl(usersProjectsApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFilesRepository(filesApi: FilesApi): FilesRepository {
+        return FilesRepositoryImpl(filesApi)
     }
 }

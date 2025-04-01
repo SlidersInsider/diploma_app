@@ -63,12 +63,6 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideFilesApi(retrofit: Retrofit): FilesApi {
-        return retrofit.create(FilesApi::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun provideRolesApi(retrofit: Retrofit): RolesApi {
         return retrofit.create(RolesApi::class.java)
     }
@@ -77,5 +71,11 @@ class NetworkModule {
     @Singleton
     fun provideUsersProjectsApi(retrofit: Retrofit): UsersProjectsApi {
         return retrofit.create(UsersProjectsApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFilesApi(retrofit: Retrofit): FilesApi {
+        return retrofit.create(FilesApi::class.java)
     }
 }

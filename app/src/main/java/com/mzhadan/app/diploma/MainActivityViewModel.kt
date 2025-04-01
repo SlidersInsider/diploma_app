@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mzhadan.app.network.models.files.FileResponse
 import com.mzhadan.app.network.models.projects.ProjectResponse
 import com.mzhadan.app.network.models.roles.RoleResponse
 import com.mzhadan.app.network.models.up.UserProjectResponse
 import com.mzhadan.app.network.models.users.UserResponse
+import com.mzhadan.app.network.repository.files.FilesRepository
 import com.mzhadan.app.network.repository.projects.ProjectsRepository
 import com.mzhadan.app.network.repository.roles.RolesRepository
 import com.mzhadan.app.network.repository.up.UsersProjectsRepository
@@ -21,7 +23,8 @@ class MainActivityViewModel @Inject constructor(
     private val usersRepository: UsersRepository,
     private val projectsRepository: ProjectsRepository,
     private val rolesRepository: RolesRepository,
-    private val usersProjectsRepository: UsersProjectsRepository
+    private val usersProjectsRepository: UsersProjectsRepository,
+    private val filesRepository: FilesRepository
 ): ViewModel() {
     private val _users = MutableLiveData<List<UserResponse>>()
     val users: LiveData<List<UserResponse>> get() = _users
@@ -34,6 +37,9 @@ class MainActivityViewModel @Inject constructor(
 
     private val _ups = MutableLiveData<UserProjectResponse>()
     val ups: LiveData<UserProjectResponse> get() = _ups
+
+    private val _files = MutableLiveData<List<FileResponse>>()
+    val files: LiveData<List<FileResponse>> get() = _files
 
     fun getAllUsers() {
         viewModelScope.launch {
@@ -67,6 +73,15 @@ class MainActivityViewModel @Inject constructor(
             val response = usersProjectsRepository.getUsersFromProjectById(projectId)
             if (response.isSuccessful) {
                 _ups.postValue(response.body())
+            }
+        }
+    }
+
+    fun getAllFiles() {
+        viewModelScope.launch {
+            val response = filesRepository.getFiles()
+            if (response.isSuccessful) {
+                _files.postValue(response.body())
             }
         }
     }
