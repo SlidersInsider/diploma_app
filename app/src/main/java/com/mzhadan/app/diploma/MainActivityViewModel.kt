@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mzhadan.app.network.models.projects.ProjectResponse
 import com.mzhadan.app.network.models.roles.RoleResponse
+import com.mzhadan.app.network.models.up.UserProjectResponse
 import com.mzhadan.app.network.models.users.UserResponse
 import com.mzhadan.app.network.repository.projects.ProjectsRepository
 import com.mzhadan.app.network.repository.roles.RolesRepository
+import com.mzhadan.app.network.repository.up.UsersProjectsRepository
 import com.mzhadan.app.network.repository.users.UsersRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +20,8 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val usersRepository: UsersRepository,
     private val projectsRepository: ProjectsRepository,
-    private val rolesRepository: RolesRepository
+    private val rolesRepository: RolesRepository,
+    private val usersProjectsRepository: UsersProjectsRepository
 ): ViewModel() {
     private val _users = MutableLiveData<List<UserResponse>>()
     val users: LiveData<List<UserResponse>> get() = _users
@@ -28,6 +31,9 @@ class MainActivityViewModel @Inject constructor(
 
     private val _roles = MutableLiveData<List<RoleResponse>>()
     val roles: LiveData<List<RoleResponse>> get() = _roles
+
+    private val _ups = MutableLiveData<UserProjectResponse>()
+    val ups: LiveData<UserProjectResponse> get() = _ups
 
     fun getAllUsers() {
         viewModelScope.launch {
@@ -52,6 +58,15 @@ class MainActivityViewModel @Inject constructor(
             val response = rolesRepository.getRoles()
             if (response.isSuccessful) {
                 _roles.postValue(response.body())
+            }
+        }
+    }
+
+    fun getAllUsersFromProject(projectId: Int) {
+        viewModelScope.launch {
+            val response = usersProjectsRepository.getUsersFromProjectById(projectId)
+            if (response.isSuccessful) {
+                _ups.postValue(response.body())
             }
         }
     }

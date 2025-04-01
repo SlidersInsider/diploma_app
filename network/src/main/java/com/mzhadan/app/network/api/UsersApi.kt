@@ -1,7 +1,7 @@
 package com.mzhadan.app.network.api
 
 import com.mzhadan.app.network.models.ApiResponse
-import com.mzhadan.app.network.models.users.RoleModel
+import com.mzhadan.app.network.models.roles.Role
 import com.mzhadan.app.network.models.users.User
 import com.mzhadan.app.network.models.users.UserResponse
 import retrofit2.Response
@@ -31,5 +31,5 @@ interface UsersApi {
     suspend fun removeUser(@Path("user_id") userId: Int): Response<ApiResponse>
 
     @PUT("users/{user_id}/role")
-    suspend fun updateUserRole(@Path("user_id") userId: Int, @Body role: RoleModel): Response<UserResponse>
+    suspend fun updateUserRole(@Path("user_id") userId: Int, @Body role: Role): Response<UserResponse>
 }
