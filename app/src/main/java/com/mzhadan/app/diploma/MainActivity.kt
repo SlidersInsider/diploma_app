@@ -53,5 +53,10 @@ class MainActivity : AppCompatActivity() {
                 Log.d("File", "ID: ${it.id}, Name: ${it.filename}, Path: ${it.file_path}, ProjectId: ${it.project_id}")
             }
         }
+
+        viewModel.token.observe(this) { token ->
+            Log.d("Token", "Code: $token")
+
+        }
     }
 }

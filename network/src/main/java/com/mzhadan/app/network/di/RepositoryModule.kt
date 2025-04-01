@@ -1,10 +1,13 @@
 package com.mzhadan.app.network.di
 
+import com.mzhadan.app.network.api.AuthApi
 import com.mzhadan.app.network.api.FilesApi
 import com.mzhadan.app.network.api.ProjectsApi
 import com.mzhadan.app.network.api.RolesApi
 import com.mzhadan.app.network.api.UsersApi
 import com.mzhadan.app.network.api.UsersProjectsApi
+import com.mzhadan.app.network.repository.auth.AuthRepository
+import com.mzhadan.app.network.repository.auth.AuthRepositoryImpl
 import com.mzhadan.app.network.repository.files.FilesRepository
 import com.mzhadan.app.network.repository.files.FilesRepositoryImpl
 import com.mzhadan.app.network.repository.projects.ProjectsRepository
@@ -52,5 +55,11 @@ class RepositoryModule {
     @Singleton
     fun provideFilesRepository(filesApi: FilesApi): FilesRepository {
         return FilesRepositoryImpl(filesApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(authApi: AuthApi): AuthRepository {
+        return AuthRepositoryImpl(authApi)
     }
 }

@@ -1,5 +1,6 @@
 package com.mzhadan.app.network.di
 
+import com.mzhadan.app.network.api.AuthApi
 import com.mzhadan.app.network.api.FilesApi
 import com.mzhadan.app.network.api.ProjectsApi
 import com.mzhadan.app.network.api.RolesApi
@@ -77,5 +78,11 @@ class NetworkModule {
     @Singleton
     fun provideFilesApi(retrofit: Retrofit): FilesApi {
         return retrofit.create(FilesApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthApi(retrofit: Retrofit): AuthApi {
+        return retrofit.create(AuthApi::class.java)
     }
 }

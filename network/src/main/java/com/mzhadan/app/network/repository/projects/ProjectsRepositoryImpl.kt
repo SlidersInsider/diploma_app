@@ -28,5 +28,4 @@ class ProjectsRepositoryImpl @Inject constructor(
     override suspend fun removeProject(projectId: Int): Response<ProjectResponse> {
         return projectsApi.removeProject(projectId)
     }
-
 }

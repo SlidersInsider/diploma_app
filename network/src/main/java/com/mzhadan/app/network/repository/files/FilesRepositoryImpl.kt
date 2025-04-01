@@ -39,5 +39,4 @@ class FilesRepositoryImpl @Inject constructor(
     override suspend fun downloadFile(fileId: Int, privateKey: String): Response<ResponseBody> {
         return filesApi.downloadFile(fileId, privateKey)
     }
-
 }

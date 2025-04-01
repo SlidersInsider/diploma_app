@@ -2,7 +2,7 @@ package com.mzhadan.app.network.repository.users
 
 import com.mzhadan.app.network.api.UsersApi
 import com.mzhadan.app.network.models.ApiResponse
-import com.mzhadan.app.network.models.users.RoleModel
+import com.mzhadan.app.network.models.roles.Role
 import com.mzhadan.app.network.models.users.User
 import com.mzhadan.app.network.models.users.UserResponse
 import retrofit2.Response
@@ -31,7 +31,7 @@ class UsersRepositoryImpl @Inject constructor(
         return usersApi.removeUser(userId)
     }
 
-    override suspend fun updateUserRole(userId: Int, role: RoleModel): Response<UserResponse> {
+    override suspend fun updateUserRole(userId: Int, role: Role): Response<UserResponse> {
         return usersApi.updateUserRole(userId, role)
     }
 }

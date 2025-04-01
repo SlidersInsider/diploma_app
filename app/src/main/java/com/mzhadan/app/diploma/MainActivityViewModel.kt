@@ -9,6 +9,7 @@ import com.mzhadan.app.network.models.projects.ProjectResponse
 import com.mzhadan.app.network.models.roles.RoleResponse
 import com.mzhadan.app.network.models.up.UserProjectResponse
 import com.mzhadan.app.network.models.users.UserResponse
+import com.mzhadan.app.network.repository.auth.AuthRepository
 import com.mzhadan.app.network.repository.files.FilesRepository
 import com.mzhadan.app.network.repository.projects.ProjectsRepository
 import com.mzhadan.app.network.repository.roles.RolesRepository
@@ -24,7 +25,8 @@ class MainActivityViewModel @Inject constructor(
     private val projectsRepository: ProjectsRepository,
     private val rolesRepository: RolesRepository,
     private val usersProjectsRepository: UsersProjectsRepository,
-    private val filesRepository: FilesRepository
+    private val filesRepository: FilesRepository,
+    private val authRepository: AuthRepository
 ): ViewModel() {
     private val _users = MutableLiveData<List<UserResponse>>()
     val users: LiveData<List<UserResponse>> get() = _users
@@ -40,6 +42,9 @@ class MainActivityViewModel @Inject constructor(
 
     private val _files = MutableLiveData<List<FileResponse>>()
     val files: LiveData<List<FileResponse>> get() = _files
+
+    private val _token = MutableLiveData<String>()
+    val token: LiveData<String> get() = _token
 
     fun getAllUsers() {
         viewModelScope.launch {
@@ -82,6 +87,24 @@ class MainActivityViewModel @Inject constructor(
             val response = filesRepository.getFiles()
             if (response.isSuccessful) {
                 _files.postValue(response.body())
+            }
+        }
+    }
+
+    fun register(username: String, password: String, roleId: Int) {
+        viewModelScope.launch {
+            val response = authRepository.register(username, password, roleId)
+            if (response.isSuccessful) {
+                _token.postValue(response.body()?.access_token)
+            }
+        }
+    }
+
+    fun login(username: String, password: String) {
+        viewModelScope.launch {
+            val response = authRepository.login(username, password)
+            if (response.isSuccessful) {
+                _token.postValue(response.body()?.access_token)
             }
         }
     }

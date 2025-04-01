@@ -24,5 +24,4 @@ class RolesRepositoryImpl @Inject constructor(
     override suspend fun removeRole(roleId: Int): Response<RoleResponse> {
         return rolesApi.removeRole(roleId)
     }
-
 }
