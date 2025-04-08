@@ -1,62 +1,72 @@
 package com.mzhadan.app.diploma
 
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.mzhadan.app.diploma.databinding.ActivityMainBinding
+import com.mzhadan.app.diploma.ui.auth.AuthViewModel
+import com.mzhadan.app.diploma.ui.navigation.ScreenNavigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainActivityViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getAllUsers()
-        viewModel.getAllProjects()
-        viewModel.getAllRoles()
-        viewModel.getAllUsersFromProject(3)
-        viewModel.getAllFiles()
+        initFragmenting()
+        setFragmentRouting()
 
-        viewModel.users.observe(this) { users ->
-            users.forEach {
-                Log.d("User", "ID: ${it.id}, Name: ${it.username}, Role: ${it.role}")
+        mainViewModel.bottomNavigationBarVisible.observe(this) { isVisible ->
+            if (isVisible) {
+                binding.bottomNavigationView.visibility = View.VISIBLE
+            } else {
+                binding.bottomNavigationView.visibility = View.GONE
             }
         }
+    }
 
-        viewModel.projects.observe(this) { projects ->
-            projects.forEach {
-                Log.d("Project", "ID: ${it.id}, Name: ${it.name}, Description: ${it.description}")
+    private fun initFragmenting() {
+        ScreenNavigator.init(supportFragmentManager, R.id.fragmentContainer, this)
+        if (authViewModel.isUserLoggedIn()) {
+            ScreenNavigator.openHomeScreen()
+        } else {
+            ScreenNavigator.openLoginScreen()
+        }
+    }
+
+    private fun setFragmentRouting() {
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    ScreenNavigator.openHomeScreen()
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.nav_projects -> {
+                    ScreenNavigator.openProjectsScreen()
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.nav_profile -> {
+                    ScreenNavigator.openProfileScreen()
+                    return@setOnNavigationItemSelectedListener true
+                }
             }
+            false
         }
+    }
 
-        viewModel.roles.observe(this) { roles ->
-            roles.forEach {
-                Log.d("Role", "ID: ${it.id}, Name: ${it.name}")
-            }
-        }
+    fun setBottomNavViewVisibility(visibility: Int) {
+        binding.bottomNavigationView.visibility = visibility
+    }
 
-        viewModel.ups.observe(this) { up ->
-            Log.d("Project", "Name: ${up.project}")
-            up.users.forEach {
-                Log.d("User", "ID: ${it.id}, Name: ${it.username}")
-            }
-        }
-
-        viewModel.files.observe(this) { files ->
-            files.forEach {
-                Log.d("File", "ID: ${it.id}, Name: ${it.filename}, Path: ${it.file_path}, ProjectId: ${it.project_id}")
-            }
-        }
-
-        viewModel.token.observe(this) { token ->
-            Log.d("Token", "Code: $token")
-
-        }
+    fun isBottomNavViewVisible(): Boolean {
+        return binding.bottomNavigationView.isVisible
     }
 }

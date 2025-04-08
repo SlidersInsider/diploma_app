@@ -1,5 +1,7 @@
 package com.mzhadan.app.network.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.mzhadan.app.network.api.AuthApi
 import com.mzhadan.app.network.api.FilesApi
 import com.mzhadan.app.network.api.ProjectsApi
@@ -21,6 +23,7 @@ import com.mzhadan.app.network.repository.users.UsersRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -61,5 +64,11 @@ class RepositoryModule {
     @Singleton
     fun provideAuthRepository(authApi: AuthApi): AuthRepository {
         return AuthRepositoryImpl(authApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
     }
 }
