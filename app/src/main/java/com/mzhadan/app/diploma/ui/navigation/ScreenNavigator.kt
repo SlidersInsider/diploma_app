@@ -6,6 +6,8 @@ import com.mzhadan.app.diploma.MainActivity
 import com.mzhadan.app.diploma.ui.auth.login.LoginFragment
 import com.mzhadan.app.diploma.ui.auth.registration.RegistrationFragment
 import com.mzhadan.app.diploma.ui.pages.home.HomeFragment
+import com.mzhadan.app.diploma.ui.pages.profile.ProfileFragment
+import com.mzhadan.app.diploma.ui.pages.projects.ProjectsFragment
 
 object ScreenNavigator {
     private var fragmentNavigator: FragmentTransactionWrapper? = null
@@ -14,6 +16,8 @@ object ScreenNavigator {
     private var loginScreenFragment: LoginFragment? = null
     private var registrationScreenFragment: RegistrationFragment? = null
     private var homeScreenFragment: HomeFragment? = null
+    private var projectsScreenFragment: ProjectsFragment? = null
+    private var profileScreenFragment: ProfileFragment? = null
 
     fun init(fragmentManager: FragmentManager, parentContainerId: Int, mainActivity: MainActivity) {
         this.fragmentNavigator = FragmentTransactionWrapper(fragmentManager, parentContainerId)
@@ -47,10 +51,12 @@ object ScreenNavigator {
     }
 
     fun openProjectsScreen() {
-
+        projectsScreenFragment = ProjectsFragment()
+        fragmentNavigator?.replaceFragment(projectsScreenFragment!!, "ProjectsScreenFragment")
     }
 
     fun openProfileScreen() {
-
+        profileScreenFragment = ProfileFragment()
+        fragmentNavigator?.replaceFragment(profileScreenFragment!!, "ProfileScreenFragment")
     }
 }

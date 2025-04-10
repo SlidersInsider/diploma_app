@@ -12,6 +12,8 @@ import com.mzhadan.app.network.repository.auth.AuthRepository
 import com.mzhadan.app.network.repository.auth.AuthRepositoryImpl
 import com.mzhadan.app.network.repository.files.FilesRepository
 import com.mzhadan.app.network.repository.files.FilesRepositoryImpl
+import com.mzhadan.app.network.repository.prefs.PrefsRepository
+import com.mzhadan.app.network.repository.prefs.PrefsRepositoryImpl
 import com.mzhadan.app.network.repository.projects.ProjectsRepository
 import com.mzhadan.app.network.repository.projects.ProjectsRepositoryImpl
 import com.mzhadan.app.network.repository.roles.RolesRepository
@@ -70,5 +72,11 @@ class RepositoryModule {
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun providePrefsRepository(sharedPreferences: SharedPreferences): PrefsRepository {
+        return PrefsRepositoryImpl(sharedPreferences)
     }
 }
