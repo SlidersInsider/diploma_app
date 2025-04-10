@@ -22,6 +22,7 @@ class AuthViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     response.body()?.let {
                         prefsRepository.saveToken(it.access_token)
+                        prefsRepository.saveUsername(username)
                         onSuccess()
                     }
                 } else {

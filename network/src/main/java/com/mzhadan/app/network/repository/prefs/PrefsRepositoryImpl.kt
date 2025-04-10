@@ -18,4 +18,10 @@ class PrefsRepositoryImpl @Inject constructor(
     override fun logout() {
         sharedPreferences.edit().remove("access_token").apply()
     }
+
+    override fun saveUsername(username: String) {
+        sharedPreferences.edit().putString("username", username).apply()
+    }
+
+    override fun getUsername(): String? = sharedPreferences.getString("username", null)
 }

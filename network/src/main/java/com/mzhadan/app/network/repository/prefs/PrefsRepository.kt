@@ -5,4 +5,7 @@ interface PrefsRepository {
     fun getToken(): String?
     fun isUserLoggedIn(): Boolean
     fun logout()
+
+    fun saveUsername(username: String)
+    fun getUsername(): String?
 }
