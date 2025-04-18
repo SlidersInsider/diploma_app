@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mzhadan.app.network.repository.auth.AuthRepository
 import com.mzhadan.app.network.repository.prefs.PrefsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun login(username: String, password: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = authRepository.login(username, password)
                 if (response.isSuccessful) {
@@ -37,7 +38,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun register(username: String, password: String, roleId: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = authRepository.register(username, password, roleId)
                 if (response.isSuccessful) {

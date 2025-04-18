@@ -17,5 +17,5 @@ interface FilesRepository {
         publicKey: String
     ): Response<ApiResponse>
     suspend fun removeFile(fileId: Int): Response<ApiResponse>
-    suspend fun downloadFile(fileId: Int, privateKey: String): Response<ResponseBody>
+    suspend fun downloadFile(fileId: Int, userId: Int, privateKey: String): Response<ResponseBody>
 }

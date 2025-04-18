@@ -8,4 +8,9 @@ interface PrefsRepository {
 
     fun saveUsername(username: String)
     fun getUsername(): String?
+    fun isUserNamedIn(): Boolean
+
+    fun saveUID(uid: Int)
+    fun getUID(): Int?
+    fun isUserUidedIn(): Boolean
 }

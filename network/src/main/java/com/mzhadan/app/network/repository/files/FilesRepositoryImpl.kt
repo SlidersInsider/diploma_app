@@ -36,7 +36,7 @@ class FilesRepositoryImpl @Inject constructor(
         return removeFile(fileId)
     }
 
-    override suspend fun downloadFile(fileId: Int, privateKey: String): Response<ResponseBody> {
-        return filesApi.downloadFile(fileId, privateKey)
+    override suspend fun downloadFile(fileId: Int, userId: Int, privateKey: String): Response<ResponseBody> {
+        return filesApi.downloadFile(fileId, userId, privateKey)
     }
 }

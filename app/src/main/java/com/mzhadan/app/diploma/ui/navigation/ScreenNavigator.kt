@@ -1,5 +1,6 @@
 package com.mzhadan.app.diploma.ui.navigation
 
+import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.mzhadan.app.diploma.MainActivity
@@ -7,6 +8,7 @@ import com.mzhadan.app.diploma.ui.auth.login.LoginFragment
 import com.mzhadan.app.diploma.ui.auth.registration.RegistrationFragment
 import com.mzhadan.app.diploma.ui.pages.home.HomeFragment
 import com.mzhadan.app.diploma.ui.pages.profile.ProfileFragment
+import com.mzhadan.app.diploma.ui.pages.project_info.ProjectInfoFragment
 import com.mzhadan.app.diploma.ui.pages.projects.ProjectsFragment
 
 object ScreenNavigator {
@@ -18,6 +20,7 @@ object ScreenNavigator {
     private var homeScreenFragment: HomeFragment? = null
     private var projectsScreenFragment: ProjectsFragment? = null
     private var profileScreenFragment: ProfileFragment? = null
+    private var projectInfoFragment: ProjectInfoFragment? = null
 
     fun init(fragmentManager: FragmentManager, parentContainerId: Int, mainActivity: MainActivity) {
         this.fragmentNavigator = FragmentTransactionWrapper(fragmentManager, parentContainerId)
@@ -48,6 +51,15 @@ object ScreenNavigator {
         if (!mainActivity?.isBottomNavViewVisible()!!) {
             mainActivity?.setBottomNavViewVisibility(View.VISIBLE)
         }
+    }
+
+    fun openProjectInfoScreen(projectId: Int) {
+        projectInfoFragment = ProjectInfoFragment().apply {
+            val bundle = Bundle()
+            bundle.putInt("project_id", projectId)
+            arguments = bundle
+        }
+        fragmentNavigator?.replaceFragment(projectInfoFragment!!, "ProjectInfoFragment")
     }
 
     fun openProjectsScreen() {

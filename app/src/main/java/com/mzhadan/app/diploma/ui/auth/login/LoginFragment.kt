@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
                         Toast.makeText(requireContext(), "Вход успешен!", Toast.LENGTH_SHORT).show()
                     },
                     onError = { message ->
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                     })
             }
 

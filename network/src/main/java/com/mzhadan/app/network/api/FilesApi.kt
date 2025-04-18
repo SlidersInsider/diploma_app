@@ -6,12 +6,14 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.DELETE
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.Streaming
 
 interface FilesApi {
     @GET("files/")
@@ -35,6 +37,12 @@ interface FilesApi {
     @DELETE("files/{file_id}")
     suspend fun removeFile(@Path("file_id") fileId: Int): Response<ApiResponse>
 
-    @GET("files/download/{file_id}")
-    suspend fun downloadFile(@Path("file_id") fileId: Int, @Query("private_key") privateKey: String): Response<ResponseBody>
+    @FormUrlEncoded
+    @POST("files/download/{file_id}")
+    @Streaming
+    suspend fun downloadFile(
+        @Path("file_id") fileId: Int,
+        @Field("user_id") userId: Int,
+        @Field("private_key") privateKey: String
+    ): Response<ResponseBody>
 }

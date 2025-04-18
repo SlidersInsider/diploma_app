@@ -5,14 +5,14 @@
     android:padding="16dp">
 
     <TextView
-        android:text="Мои проекты"
+        android:text="Файлы проекта"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/projectsRecyclerView"
+        android:id="@+id/filesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"/>

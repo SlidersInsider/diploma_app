@@ -1,6 +1,6 @@
 package com.mzhadan.app.network.models.up
 
 data class UserProject(
-    val userId: Int,
-    val projectId: Int
+    val user_id: Int,
+    val project_id: Int
 )

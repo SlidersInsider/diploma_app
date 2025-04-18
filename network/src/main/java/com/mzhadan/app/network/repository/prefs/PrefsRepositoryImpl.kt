@@ -24,4 +24,13 @@ class PrefsRepositoryImpl @Inject constructor(
     }
 
     override fun getUsername(): String? = sharedPreferences.getString("username", null)
+    override fun isUserNamedIn(): Boolean = getUsername() != null
+
+    override fun saveUID(uid: Int) {
+        sharedPreferences.edit().putInt("uid", uid).apply()
+    }
+
+    override fun getUID(): Int = sharedPreferences.getInt("uid", -1)
+
+    override fun isUserUidedIn(): Boolean = getUID() != -1
 }
