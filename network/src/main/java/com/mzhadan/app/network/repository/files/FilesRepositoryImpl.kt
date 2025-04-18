@@ -4,6 +4,7 @@ import com.mzhadan.app.network.api.FilesApi
 import com.mzhadan.app.network.models.ApiResponse
 import com.mzhadan.app.network.models.files.FileResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
@@ -25,9 +26,9 @@ class FilesRepositoryImpl @Inject constructor(
 
     override suspend fun addFile(
         file: MultipartBody.Part,
-        projectId: Int,
-        userId: Int,
-        publicKey: String
+        projectId: RequestBody,
+        userId: RequestBody,
+        publicKey: RequestBody
     ): Response<ApiResponse> {
         return filesApi.addFile(file, projectId, userId, publicKey)
     }

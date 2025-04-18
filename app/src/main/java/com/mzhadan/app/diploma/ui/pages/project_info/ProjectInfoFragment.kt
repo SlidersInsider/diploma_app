@@ -1,9 +1,12 @@
 package com.mzhadan.app.diploma.ui.pages.project_info
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +21,25 @@ class ProjectInfoFragment : Fragment() {
     private val projectInfoViewModel: ProjectInfoViewModel by viewModels()
 
     private lateinit var projectInfoAdapter: ProjectInfoAdapter
+
+    private var pid: Int = -1
+
+    private val openDocumentLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        uri?.let {
+            requireContext().contentResolver.takePersistableUriPermission(
+                it,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+
+            projectInfoViewModel.uploadFile(requireContext(), uri, 1, TestKeys.MANAGER_PUBLIC_KEY, onSuccess = {
+                          projectInfoViewModel.getFiles(1)
+            }, onError = {
+
+            })
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +58,12 @@ class ProjectInfoFragment : Fragment() {
         }
 
         arguments?.let {
-            projectInfoViewModel.getFiles(it.getInt("project_id"))
+            pid = it.getInt("project_id")
+            projectInfoViewModel.getFiles(pid)
+        }
+
+        binding.fabAddFile.setOnClickListener {
+            openDocumentLauncher.launch(arrayOf("*/*"))
         }
 
     }

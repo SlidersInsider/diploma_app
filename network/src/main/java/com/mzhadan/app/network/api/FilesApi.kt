@@ -3,6 +3,7 @@ package com.mzhadan.app.network.api
 import com.mzhadan.app.network.models.ApiResponse
 import com.mzhadan.app.network.models.files.FileResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.DELETE
@@ -29,9 +30,9 @@ interface FilesApi {
     @POST("files/")
     suspend fun addFile(
         @Part file: MultipartBody.Part,
-        @Part("project_id") projectId: Int,
-        @Part("user_id") userId: Int,
-        @Part("public_key") publicKey: String
+        @Part("project_id") projectId: RequestBody,
+        @Part("user_id") userId: RequestBody,
+        @Part("public_key") publicKey: RequestBody
     ): Response<ApiResponse>
 
     @DELETE("files/{file_id}")
