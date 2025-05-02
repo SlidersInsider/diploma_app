@@ -17,4 +17,9 @@ class WordViewerFragment : Fragment() {
         binding = FragmentWordViewerBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val path = arguments?.getString("path")
+        binding.filenameTV.text = path
+    }
 }

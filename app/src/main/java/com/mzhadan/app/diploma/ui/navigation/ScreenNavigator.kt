@@ -10,6 +10,9 @@ import com.mzhadan.app.diploma.ui.pages.home.HomeFragment
 import com.mzhadan.app.diploma.ui.pages.profile.ProfileFragment
 import com.mzhadan.app.diploma.ui.pages.project_info.ProjectInfoFragment
 import com.mzhadan.app.diploma.ui.pages.projects.ProjectsFragment
+import com.mzhadan.app.diploma.ui.pages.viewers.pdf.PdfViewerFragment
+import com.mzhadan.app.diploma.ui.pages.viewers.txt.TxtViewerFragment
+import com.mzhadan.app.diploma.ui.pages.viewers.word.WordViewerFragment
 
 object ScreenNavigator {
     private var fragmentNavigator: FragmentTransactionWrapper? = null
@@ -21,6 +24,9 @@ object ScreenNavigator {
     private var projectsScreenFragment: ProjectsFragment? = null
     private var profileScreenFragment: ProfileFragment? = null
     private var projectInfoFragment: ProjectInfoFragment? = null
+    private var txtViewerFragment: TxtViewerFragment? = null
+    private var pdfViewerFragment: PdfViewerFragment? = null
+    private var wordViewerFragment: WordViewerFragment? = null
 
     fun init(fragmentManager: FragmentManager, parentContainerId: Int, mainActivity: MainActivity) {
         this.fragmentNavigator = FragmentTransactionWrapper(fragmentManager, parentContainerId)
@@ -70,5 +76,32 @@ object ScreenNavigator {
     fun openProfileScreen() {
         profileScreenFragment = ProfileFragment()
         fragmentNavigator?.replaceFragment(profileScreenFragment!!, "ProfileScreenFragment")
+    }
+
+    fun openTxtViewerScreen(filePath: String) {
+        txtViewerFragment = TxtViewerFragment().apply {
+            val bundle = Bundle()
+            bundle.putString("path", filePath)
+            arguments = bundle
+        }
+        fragmentNavigator?.replaceFragment(txtViewerFragment!!, "TxtViewerFragment")
+    }
+
+    fun openPdfViewerScreen(filePath: String) {
+        pdfViewerFragment = PdfViewerFragment().apply {
+            val bundle = Bundle()
+            bundle.putString("path", filePath)
+            arguments = bundle
+        }
+        fragmentNavigator?.replaceFragment(pdfViewerFragment!!, "PdfViewerFragment")
+    }
+
+    fun openWordViewerScreen(filePath: String) {
+        wordViewerFragment = WordViewerFragment().apply {
+            val bundle = Bundle()
+            bundle.putString("path", filePath)
+            arguments = bundle
+        }
+        fragmentNavigator?.replaceFragment(wordViewerFragment!!, "WordViewerFragment")
     }
 }
