@@ -1,24 +1,21 @@
 package com.mzhadan.app.diploma.ui.pages.viewers.word
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.FrameLayout
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mzhadan.app.diploma.databinding.FragmentWordViewerBinding
 import org.apache.poi.xwpf.usermodel.XWPFDocument
-import org.apache.poi.xwpf.usermodel.XWPFParagraph
 import java.io.File
 import java.io.FileInputStream
-import java.io.FileOutputStream
 
 class WordViewerFragment : Fragment() {
     private lateinit var binding: FragmentWordViewerBinding
-    private lateinit var editText: EditText
-
-    private var isEditing = false
+    private lateinit var webView: WebView
     private var path: String? = null
 
     override fun onCreateView(
@@ -31,112 +28,55 @@ class WordViewerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         path = arguments?.getString("path")
-        binding.filenameTV.text = path
+        binding.filenameTV.text = path ?: "Файл не найден"
 
-        editText = EditText(requireContext()).apply {
-            layoutParams = FrameLayout.LayoutParams(
+        webView = WebView(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            isFocusable = false
-            isFocusableInTouchMode = false
-            isSingleLine = false
-            setPadding(16, 16, 16, 16)
-        }
-        binding.contentContainer.addView(editText)
-
-        path?.let { readDocx(it) }
-
-        binding.btnEdit.setOnClickListener {
-            isEditing = !isEditing
-            editText.isFocusable = isEditing
-            editText.isFocusableInTouchMode = isEditing
-            if (isEditing) editText.requestFocus()
+            settings.javaScriptEnabled = true
+            webViewClient = WebViewClient()
         }
 
-        binding.btnSave.setOnClickListener {
-            if (isEditing && path != null) {
-                saveDocx(path!!, editText.text.toString())
-                Toast.makeText(requireContext(), "Файл сохранен!", Toast.LENGTH_SHORT).show()
-            }
-        }
+        binding.contentContainer.addView(webView)
+
+        path?.let { loadDocxAsHtml(it) }
     }
 
-    // Чтение документа с сохранением структуры
-    private fun readDocx(path: String) {
+    private fun loadDocxAsHtml(filePath: String) {
         try {
-            val file = File(path)
+            val file = File(filePath)
             val inputStream = FileInputStream(file)
             val document = XWPFDocument(inputStream)
-            val paragraphs = document.paragraphs
-            val text = StringBuilder()
 
-            // Считывание текста и стилей
-            for (paragraph in paragraphs) {
-                text.append(readParagraph(paragraph))
-                text.append("\n") // Добавляем перенос строки между параграфами
-            }
+            val htmlBuilder = StringBuilder()
+            htmlBuilder.append("<html><body style='padding:16px;'>")
 
-            editText.setText(text.toString())
-            inputStream.close()
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Ошибка чтения файла", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        }
-    }
+            for (paragraph in document.paragraphs) {
+                htmlBuilder.append("<p>")
+                for (run in paragraph.runs) {
+                    val text = run.text() ?: continue
+                    val style = StringBuilder()
 
-    // Метод для чтения каждого параграфа с сохранением его стилей
-    private fun readParagraph(paragraph: XWPFParagraph): String {
-        val text = StringBuilder()
+                    if (run.isBold) style.append("font-weight:bold;")
+                    if (run.isItalic) style.append("font-style:italic;")
+                    if (run.underline.name != "NONE") style.append("text-decoration:underline;")
+                    if (run.fontSize > 0) style.append("font-size:${run.fontSize}px;")
+                    if (run.fontFamily != null) style.append("font-family:${run.fontFamily};")
 
-        // Проходим по всем "run" в параграфе (каждая часть текста с одинаковым стилем)
-        for (run in paragraph.runs) {
-            // Сохраняем текст с применением стилей
-            val runText = run.text()
-            if (run.isBold) {
-                text.append("**$runText**") // Жирный текст (можно форматировать по-другому)
-            } else if (run.isItalic) {
-                text.append("*$runText*") // Курсив
-            } else {
-                text.append(runText)
-            }
-        }
-
-        return text.toString()
-    }
-
-    // Сохранение документа с сохранением структуры
-    private fun saveDocx(path: String, content: String) {
-        try {
-            val file = File(path)
-            val outputStream = FileOutputStream(file)
-            val document = XWPFDocument()
-
-            // Разбиваем текст по параграфам и сохраняем каждый параграф с его стилями
-            val lines = content.split("\n")
-            for (line in lines) {
-                val paragraph = document.createParagraph()
-                val run = paragraph.createRun()
-
-                // Применение стилей к сохраненному тексту
-                when {
-                    line.contains("**") -> { // Пример для жирного текста
-                        run.isBold = true
-                        run.setText(line.replace("**", ""))
-                    }
-                    line.contains("*") -> { // Пример для текста в курсе
-                        run.isItalic = true
-                        run.setText(line.replace("*", ""))
-                    }
-                    else -> run.setText(line)
+                    htmlBuilder.append("<span style='$style'>$text</span>")
                 }
+                htmlBuilder.append("</p>")
             }
 
-            // Запись в файл
-            document.write(outputStream)
-            outputStream.close()
+            htmlBuilder.append("</body></html>")
+            inputStream.close()
+
+            webView.loadDataWithBaseURL(null, htmlBuilder.toString(), "text/html", "UTF-8", null)
+
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Ошибка сохранения файла", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Ошибка отображения документа", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
     }
