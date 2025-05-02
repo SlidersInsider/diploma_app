@@ -1,5 +1,6 @@
 [versions]
 agp = "8.1.2"
+docx4jImportxhtml = "8.3.1"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
 appcompat = "1.7.0"
@@ -12,6 +13,7 @@ retrofit = "2.9.0"
 okhttp = "4.11.0"
 hilt = "2.51.1"
 lifecycle = "2.8.7"
+docx = "5.2.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +39,8 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 #Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+
+apache-docx-reader = { group = "org.apache.poi", name = "poi-ooxml", version.ref = "docx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.coroutines.core)
 
+    implementation(libs.apache.docx.reader)
+
     api(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
