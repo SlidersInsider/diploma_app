@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzhadan.app.diploma.TestKeys
 import com.mzhadan.app.diploma.databinding.FragmentProjectInfoBinding
+import com.mzhadan.app.diploma.ui.navigation.ScreenNavigator
 import com.mzhadan.app.network.models.files.FileResponse
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -71,8 +72,21 @@ class ProjectInfoFragment : Fragment() {
     private fun setupProjectsAdapter() {
         projectInfoAdapter = ProjectInfoAdapter(object: ProjectInfoAdapter.FilesViewHolder.Callback {
             override fun onFileDownloadClicked(file: FileResponse) {
-                projectInfoViewModel.downloadFile(requireContext(), file.id, file.filename, TestKeys.WORKER_PRIVATE_KEY)
+//                projectInfoViewModel.downloadFile(requireContext(), file.id, file.filename, TestKeys.WORKER_PRIVATE_KEY) { path ->
+//                    when(getExtension(file.filename)) {
+//                        "txt" -> ScreenNavigator.openTxtViewerScreen(path)
+//                        "pdf" -> ScreenNavigator.openPdfViewerScreen(path)
+//                        "docx" -> ScreenNavigator.openWordViewerScreen(path)
+//                    }
+//                }
+                when(getExtension(file.filename)) {
+                    "txt" -> ScreenNavigator.openTxtViewerScreen(file.file_path)
+                    "pdf" -> ScreenNavigator.openPdfViewerScreen(file.file_path)
+                    "docx" -> ScreenNavigator.openWordViewerScreen(file.file_path)
+                }
             }
         })
     }
+
+    private fun getExtension(filename: String) = filename.substringAfterLast(".".lowercase())
 }

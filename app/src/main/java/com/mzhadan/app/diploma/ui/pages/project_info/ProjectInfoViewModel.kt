@@ -30,15 +30,22 @@ class ProjectInfoViewModel @Inject constructor(
     val files: LiveData<List<FileResponse>> = _files
 
     fun getFiles(projectId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = filesRepository.getFilesByProject(projectId)
-            if (response.isSuccessful) {
-                _files.postValue(response.body())
-            }
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val response = filesRepository.getFilesByProject(projectId)
+//            if (response.isSuccessful) {
+//                _files.postValue(response.body())
+//            }
+//        }
+        _files.postValue(arrayListOf(FileResponse(0,0,0,"dnevnik.docx", "/data/data/com.mzhadan.app.diploma/files/temp/dnevnik.docx", "")))
     }
 
-    fun downloadFile(context: Context, fileId: Int, filename: String, privateKey: String) {
+    fun downloadFile(
+        context: Context,
+        fileId: Int,
+        filename: String,
+        privateKey: String,
+        onSuccess: (String) -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
 //            val userId = prefsRepository.getUID()
             val userId = 2
@@ -51,6 +58,7 @@ class ProjectInfoViewModel @Inject constructor(
                         file.outputStream().use { output ->
                             body.byteStream().copyTo(output)
                         }
+                        onSuccess(file.absolutePath)
                     }
                 }
             }

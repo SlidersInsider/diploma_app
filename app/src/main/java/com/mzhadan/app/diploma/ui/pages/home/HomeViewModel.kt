@@ -46,11 +46,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getAllProjects() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = projectsRepository.getProjects()
-            if (response.isSuccessful) {
-                _projects.postValue(response.body())
-            }
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val response = projectsRepository.getProjects()
+//            if (response.isSuccessful) {
+//                _projects.postValue(response.body())
+//            }
+//        }
+        _projects.postValue(arrayListOf(ProjectResponse(0,"test proj", "this is test proj")))
     }
 }

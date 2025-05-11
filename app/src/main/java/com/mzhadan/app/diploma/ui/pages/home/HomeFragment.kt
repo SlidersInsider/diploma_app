@@ -31,9 +31,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mainViewModel.updateBottomNavigationBarVisibility(View.VISIBLE)
-        if (!homeViewModel.isUserUidedIn()) {
-            homeViewModel.getUserByName()
-        }
+//        if (!homeViewModel.isUserUidedIn()) {
+//            homeViewModel.getUserByName()
+//        }
 
         setupProjectsAdapter()
         homeViewModel.projects.observe(viewLifecycleOwner) { projects ->
