@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
-    id("kotlin-kapt")
+    //    id("kotlin-kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -54,7 +55,7 @@ dependencies {
     implementation(libs.apache.docx.reader)
 
     api(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     api(project(":network"))
     api(project(":reader"))

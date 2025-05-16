@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
-    id("kotlin-kapt")
+//    id("kotlin-kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -28,5 +29,5 @@ dependencies {
     api(libs.okhttp)
     api(libs.okhttp.logging)
     api(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 }
