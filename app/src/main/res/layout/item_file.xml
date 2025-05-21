@@ -30,7 +30,7 @@
             android:layout_height="50dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Скачать"
-            android:src="@drawable/ic_join_project"
+            android:src="@drawable/ic_download_file"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

@@ -72,17 +72,12 @@ class ProjectInfoFragment : Fragment() {
     private fun setupProjectsAdapter() {
         projectInfoAdapter = ProjectInfoAdapter(object: ProjectInfoAdapter.FilesViewHolder.Callback {
             override fun onFileDownloadClicked(file: FileResponse) {
-//                projectInfoViewModel.downloadFile(requireContext(), file.id, file.filename, TestKeys.WORKER_PRIVATE_KEY) { path ->
-//                    when(getExtension(file.filename)) {
-//                        "txt" -> ScreenNavigator.openTxtViewerScreen(path)
-//                        "pdf" -> ScreenNavigator.openPdfViewerScreen(path)
-//                        "docx" -> ScreenNavigator.openWordViewerScreen(path)
-//                    }
-//                }
-                when(getExtension(file.filename)) {
-                    "txt" -> ScreenNavigator.openTxtViewerScreen(file.file_path)
-                    "pdf" -> ScreenNavigator.openPdfViewerScreen(file.file_path)
-                    "docx" -> ScreenNavigator.openWordViewerScreen(file.file_path)
+                projectInfoViewModel.downloadFile(requireContext(), file.id, file.filename, TestKeys.WORKER_PRIVATE_KEY) { path ->
+                    when(getExtension(file.filename)) {
+                        "txt" -> ScreenNavigator.openTxtViewerScreen(path)
+                        "pdf" -> ScreenNavigator.openPdfViewerScreen(path)
+                        "docx" -> ScreenNavigator.openWordViewerScreen(path)
+                    }
                 }
             }
         })

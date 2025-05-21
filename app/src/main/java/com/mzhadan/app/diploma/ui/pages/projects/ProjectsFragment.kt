@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzhadan.app.diploma.databinding.FragmentProjectsBinding
+import com.mzhadan.app.diploma.ui.navigation.ScreenNavigator
 import com.mzhadan.app.network.models.projects.ProjectResponse
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,7 +39,7 @@ class ProjectsFragment : Fragment() {
         projectsViewModel.getAllProjects()
 
         binding.fabAddProject.setOnClickListener {
-            Toast.makeText(requireContext(), "Добавить новый проект!", Toast.LENGTH_SHORT).show()
+            ScreenNavigator.openCreateProjectFragment()
         }
     }
 

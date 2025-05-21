@@ -18,19 +18,11 @@
             android:id="@+id/filenameTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="filename.wordx"
+            android:text="file2.docx"
             android:textSize="8pt"
             android:padding="8dp"
             android:layout_weight="7"/>
 
-        <ImageButton
-            android:id="@+id/btnEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit"
-            android:contentDescription="Edit"
-            android:layout_marginEnd="15dp"
-            android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/btnSave"

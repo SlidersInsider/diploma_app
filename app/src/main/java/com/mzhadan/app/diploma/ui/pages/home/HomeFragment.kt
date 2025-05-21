@@ -31,15 +31,21 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mainViewModel.updateBottomNavigationBarVisibility(View.VISIBLE)
-//        if (!homeViewModel.isUserUidedIn()) {
-//            homeViewModel.getUserByName()
-//        }
+        if (!homeViewModel.isUserUidedIn()) {
+            homeViewModel.getUserByName()
+        }
 
         setupProjectsAdapter()
         homeViewModel.projects.observe(viewLifecycleOwner) { projects ->
-            homeAdapter.setProjects(projects)
-            binding.projectsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            binding.projectsRecyclerView.adapter = homeAdapter
+            with(binding) {
+                if (projects.isNotEmpty()) {
+                    rvProjects.visibility = View.VISIBLE
+                    tvNoProjects.visibility = View.GONE
+                }
+                homeAdapter.setProjects(projects)
+                rvProjects.layoutManager = LinearLayoutManager(requireContext())
+                rvProjects.adapter = homeAdapter
+            }
         }
 
         homeViewModel.getAllProjects()

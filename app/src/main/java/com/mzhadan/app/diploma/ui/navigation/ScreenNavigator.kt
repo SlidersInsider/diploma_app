@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import com.mzhadan.app.diploma.MainActivity
 import com.mzhadan.app.diploma.ui.auth.login.LoginFragment
 import com.mzhadan.app.diploma.ui.auth.registration.RegistrationFragment
+import com.mzhadan.app.diploma.ui.pages.create_project.CreateProjectFragment
 import com.mzhadan.app.diploma.ui.pages.home.HomeFragment
 import com.mzhadan.app.diploma.ui.pages.profile.ProfileFragment
 import com.mzhadan.app.diploma.ui.pages.project_info.ProjectInfoFragment
@@ -27,6 +28,7 @@ object ScreenNavigator {
     private var txtViewerFragment: TxtViewerFragment? = null
     private var pdfViewerFragment: PdfViewerFragment? = null
     private var wordViewerFragment: WordViewerFragment? = null
+    private var createProjectFragment: CreateProjectFragment? = null
 
     fun init(fragmentManager: FragmentManager, parentContainerId: Int, mainActivity: MainActivity) {
         this.fragmentNavigator = FragmentTransactionWrapper(fragmentManager, parentContainerId)
@@ -76,6 +78,11 @@ object ScreenNavigator {
     fun openProfileScreen() {
         profileScreenFragment = ProfileFragment()
         fragmentNavigator?.replaceFragment(profileScreenFragment!!, "ProfileScreenFragment")
+    }
+
+    fun openCreateProjectFragment() {
+        createProjectFragment = CreateProjectFragment()
+        fragmentNavigator?.replaceFragment(createProjectFragment!!, "CreateProjectFragment")
     }
 
     fun openTxtViewerScreen(filePath: String) {
