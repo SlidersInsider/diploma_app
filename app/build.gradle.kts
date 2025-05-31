@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.coroutines.android)
     implementation(libs.coroutines.core)
+    implementation(libs.bouncy.castle)
 
     api(libs.hilt.android)
     ksp(libs.hilt.compiler)
