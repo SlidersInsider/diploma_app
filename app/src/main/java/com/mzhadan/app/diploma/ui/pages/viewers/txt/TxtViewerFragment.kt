@@ -9,7 +9,8 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mzhadan.app.diploma.databinding.FragmentTxtViewerBinding
-import java.io.File
+import com.mzhadan.app.reader.TxtWorker
+import java.io.IOException
 
 class TxtViewerFragment : Fragment() {
     private lateinit var binding: FragmentTxtViewerBinding
@@ -26,7 +27,7 @@ class TxtViewerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val path = arguments?.getString("path")
+        val path = arguments?.getString("path") ?: return
         binding.filenameTV.text = path
 
         editText = EditText(requireContext()).apply {
@@ -41,7 +42,11 @@ class TxtViewerFragment : Fragment() {
         }
         binding.contentContainer.addView(editText)
 
-        readFile(path!!)
+        try {
+            editText.setText(TxtWorker.readFromFile(path))
+        } catch (e: IOException) {
+            Toast.makeText(requireContext(), "Ошибка чтения файла", Toast.LENGTH_SHORT).show()
+        }
 
         binding.btnEdit.setOnClickListener {
             isEditing = !isEditing
@@ -52,25 +57,15 @@ class TxtViewerFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             if (isEditing) {
-                saveFile(path, editText.text.toString())
-                Toast.makeText(requireContext(), "Файл сохранен!", Toast.LENGTH_SHORT).show()
+                try {
+                    TxtWorker.writeToFile(path, editText.text.toString())
+                    // отправка запроса на обновление файла
+                    Toast.makeText(requireContext(), "Файл сохранен!", Toast.LENGTH_SHORT).show()
+                } catch (e: IOException) {
+                    Toast.makeText(requireContext(), "Ошибка сохранения файла", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
-    private fun readFile(path: String) {
-        val file = File(path)
-        val inputStream = file.inputStream()
-        inputStream.bufferedReader().use {
-            editText.setText(it.readText())
-        }
-    }
-
-    private fun saveFile(path: String, content: String) {
-        val file = File(path)
-        val outputStream = file.outputStream()
-        outputStream.bufferedWriter().use {
-            it.write(content)
-        }
-    }
 }

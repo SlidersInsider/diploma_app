@@ -9,9 +9,7 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mzhadan.app.diploma.databinding.FragmentWordViewerBinding
-import org.apache.poi.xwpf.usermodel.XWPFDocument
-import java.io.File
-import java.io.FileInputStream
+import com.mzhadan.app.reader.DocxWorker
 
 class WordViewerFragment : Fragment() {
     private lateinit var binding: FragmentWordViewerBinding
@@ -41,43 +39,17 @@ class WordViewerFragment : Fragment() {
 
         binding.contentContainer.addView(webView)
 
-        path?.let { loadDocxAsHtml(it) }
-    }
+        binding.btnSave.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
-    private fun loadDocxAsHtml(filePath: String) {
-        try {
-            val file = File(filePath)
-            val inputStream = FileInputStream(file)
-            val document = XWPFDocument(inputStream)
-
-            val htmlBuilder = StringBuilder()
-            htmlBuilder.append("<html><body style='padding:16px;'>")
-
-            for (paragraph in document.paragraphs) {
-                htmlBuilder.append("<p>")
-                for (run in paragraph.runs) {
-                    val text = run.text() ?: continue
-                    val style = StringBuilder()
-
-                    if (run.isBold) style.append("font-weight:bold;")
-                    if (run.isItalic) style.append("font-style:italic;")
-                    if (run.underline.name != "NONE") style.append("text-decoration:underline;")
-                    if (run.fontSize > 0) style.append("font-size:${run.fontSize}px;")
-                    if (run.fontFamily != null) style.append("font-family:${run.fontFamily};")
-
-                    htmlBuilder.append("<span style='$style'>$text</span>")
-                }
-                htmlBuilder.append("</p>")
+        path?.let {
+            try {
+                val html = DocxWorker.convertDocxToHtml(it)
+                webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Ошибка отображения документа", Toast.LENGTH_SHORT).show()
             }
-
-            htmlBuilder.append("</body></html>")
-            inputStream.close()
-
-            webView.loadDataWithBaseURL(null, htmlBuilder.toString(), "text/html", "UTF-8", null)
-
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Ошибка отображения документа", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
         }
     }
 }

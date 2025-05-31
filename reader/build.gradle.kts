@@ -25,4 +25,6 @@ android {
 dependencies {
     api(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    implementation(libs.apache.docx.reader)
 }

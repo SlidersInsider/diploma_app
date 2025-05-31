@@ -23,7 +23,7 @@
         android:id="@+id/tvFullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ФИО: Иванов Иван Иванович"
+        android:text="ФИО: Петров Петр Петрович"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
         android:id="@+id/tvPosition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Должность: Разработчик Android"
+        android:text="Должность: Руководитель отдела 1"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/tvFullName"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
         android:id="@+id/tvPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Телефон: +7 (123) 456-78-90"
+        android:text="Телефон: +7 (999) 123-45-67"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/tvPosition"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email: ivanov@company.com"
+        android:text="Email: petrov@company.com"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/tvPhone"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,8 @@
         app:layout_constraintTop_toBottomOf="@id/tvEmail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/requestsRV"
@@ -81,6 +82,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tvRequests"
         app:layout_constraintStart_toStartOf="@id/tvRequests"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
