@@ -12,6 +12,7 @@ import com.mzhadan.app.network.repository.up.UsersProjectsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,8 +38,12 @@ class ProjectsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val response = usersProjectsRepository.addUserToProject(UserProject(user_id = prefsRepository.getUID()!!, project_id = projectId))
             if (response.isSuccessful) {
-                onSuccess()
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
             }
         }
     }
+
+    fun getRoleId(): Int = prefsRepository.getRoleId()
 }

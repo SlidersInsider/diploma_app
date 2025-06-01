@@ -7,7 +7,9 @@ import com.mzhadan.app.network.repository.prefs.PrefsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.security.PublicKey
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,32 +26,57 @@ class AuthViewModel @Inject constructor(
                     response.body()?.let {
                         prefsRepository.saveToken(it.access_token)
                         prefsRepository.saveUsername(username)
-                        onSuccess()
+                        withContext(Dispatchers.Main) {
+                            onSuccess()
+                        }
                     }
                 } else {
-                    onError("Ошибка: ${response.message()}")
+                    withContext(Dispatchers.Main) {
+                        onError("Ошибка: ${response.message()}")
+                    }
                 }
             } catch (e: HttpException) {
-                onError("Ошибка сети: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    onError("Ошибка сети: ${e.message}")
+                }
             } catch (e: Exception) {
-                onError("Неизвестная ошибка: ${e.localizedMessage}")
+                withContext(Dispatchers.Main) {
+                    onError("Неизвестная ошибка: ${e.localizedMessage}")
+                }
             }
         }
     }
 
-    fun register(username: String, password: String, roleId: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun register(
+        username: String,
+        password: String,
+        roleId: Int,
+        publicKey: String,
+        alias: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = authRepository.register(username, password, roleId)
+                prefsRepository.saveAlias(alias)
+                val response = authRepository.register(username, password, roleId, publicKey)
                 if (response.isSuccessful) {
-                    onSuccess()
+                    withContext(Dispatchers.Main) {
+                        onSuccess()
+                    }
                 } else {
-                    onError("Ошибка: ${response.message()}")
+                    withContext(Dispatchers.Main) {
+                        onError("Ошибка: ${response.message()}")
+                    }
                 }
             } catch (e: HttpException) {
-                onError("Ошибка сети: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    onError("Ошибка сети: ${e.message}")
+                }
             } catch (e: Exception) {
-                onError("Неизвестная ошибка: ${e.localizedMessage}")
+                withContext(Dispatchers.Main) {
+                    onError("Неизвестная ошибка: ${e.localizedMessage}")
+                }
             }
         }
     }

@@ -21,6 +21,10 @@ class ProjectsRepositoryImpl @Inject constructor(
         return projectsApi.getProjectByName(name)
     }
 
+    override suspend fun getProjectsByUser(userId: Int): Response<List<ProjectResponse>> {
+        return projectsApi.getProjectsByUser(userId)
+    }
+
     override suspend fun addProject(project: Project): Response<ProjectResponse> {
         return projectsApi.addProject(project)
     }

@@ -24,4 +24,7 @@ interface ProjectsApi {
 
     @DELETE("projects/{project_id}")
     suspend fun removeProject(@Path("project_id") projectId: Int): Response<ProjectResponse>
+
+    @GET("projects/user/{user_id}")
+    suspend fun getProjectsByUser(@Path("user_id") userId: Int): Response<List<ProjectResponse>>
 }

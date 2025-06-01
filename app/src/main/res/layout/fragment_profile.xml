@@ -74,7 +74,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/requestsRV"
@@ -83,6 +83,6 @@
         app:layout_constraintTop_toBottomOf="@id/tvRequests"
         app:layout_constraintStart_toStartOf="@id/tvRequests"
         android:layout_marginTop="15dp"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,6 +31,7 @@ class HomeViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     if (response.body() != null) {
                         prefsRepository.saveUID(response.body()!!.id)
+                        prefsRepository.saveRoleId(2)
                     }
                 }
             }
@@ -47,7 +48,7 @@ class HomeViewModel @Inject constructor(
 
     fun getAllProjects() {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = projectsRepository.getProjects()
+            val response = projectsRepository.getProjectsByUser(prefsRepository.getUID()!!)
             if (response.isSuccessful) {
                 _projects.postValue(response.body())
             }

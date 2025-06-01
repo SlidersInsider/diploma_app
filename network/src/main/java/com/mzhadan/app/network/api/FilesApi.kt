@@ -1,6 +1,7 @@
 package com.mzhadan.app.network.api
 
 import com.mzhadan.app.network.models.ApiResponse
+import com.mzhadan.app.network.models.files.DownloadFileResponse
 import com.mzhadan.app.network.models.files.FileResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -40,10 +41,8 @@ interface FilesApi {
 
     @FormUrlEncoded
     @POST("files/download/{file_id}")
-    @Streaming
     suspend fun downloadFile(
         @Path("file_id") fileId: Int,
-        @Field("user_id") userId: Int,
-        @Field("private_key") privateKey: String
-    ): Response<ResponseBody>
+        @Field("user_id") userId: Int
+    ): Response<DownloadFileResponse>
 }

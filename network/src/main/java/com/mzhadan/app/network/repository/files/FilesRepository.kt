@@ -1,6 +1,7 @@
 package com.mzhadan.app.network.repository.files
 
 import com.mzhadan.app.network.models.ApiResponse
+import com.mzhadan.app.network.models.files.DownloadFileResponse
 import com.mzhadan.app.network.models.files.FileResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -18,5 +19,5 @@ interface FilesRepository {
         publicKey: RequestBody
     ): Response<ApiResponse>
     suspend fun removeFile(fileId: Int): Response<ApiResponse>
-    suspend fun downloadFile(fileId: Int, userId: Int, privateKey: String): Response<ResponseBody>
+    suspend fun downloadFile(fileId: Int, userId: Int): Response<DownloadFileResponse>
 }

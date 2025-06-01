@@ -91,14 +91,14 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun register(username: String, password: String, roleId: Int) {
-        viewModelScope.launch {
-            val response = authRepository.register(username, password, roleId)
-            if (response.isSuccessful) {
-                _token.postValue(response.body()?.access_token)
-            }
-        }
-    }
+//    fun register(username: String, password: String, roleId: Int) {
+//        viewModelScope.launch {
+//            val response = authRepository.register(username, password, roleId)
+//            if (response.isSuccessful) {
+//                _token.postValue(response.body()?.access_token)
+//            }
+//        }
+//    }
 
     fun login(username: String, password: String) {
         viewModelScope.launch {

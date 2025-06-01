@@ -36,6 +36,12 @@ class ProjectsFragment : Fragment() {
             binding.projectsRecyclerView.adapter = projectsAdapter
         }
 
+        if (projectsViewModel.getRoleId() < 3) {
+            binding.fabAddProject.visibility = View.VISIBLE
+        } else {
+            binding.fabAddProject.visibility = View.GONE
+        }
+
         projectsViewModel.getAllProjects()
 
         binding.fabAddProject.setOnClickListener {
@@ -47,7 +53,7 @@ class ProjectsFragment : Fragment() {
         projectsAdapter = ProjectsAdapter(object: ProjectsAdapter.ProjectsViewHolder.Callback {
             override fun onJoinClicked(project: ProjectResponse) {
                 projectsViewModel.joinProject(project.id) {
-//                    Toast.makeText(requireContext(), "Запрос отправлен!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Запрос отправлен!", Toast.LENGTH_SHORT).show()
                 }
             }
         })

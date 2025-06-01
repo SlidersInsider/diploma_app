@@ -1,6 +1,5 @@
 package com.mzhadan.app.diploma.crypto
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -10,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec
 
 object AesUtils {
     fun generateAesKey(): SecretKey {
-        val keyGen = KeyGenerator.getInstance("AES", BouncyCastleProvider.PROVIDER_NAME)
+        val keyGen = KeyGenerator.getInstance("AES")
         keyGen.init(256)
         return keyGen.generateKey()
     }
@@ -23,10 +22,12 @@ object AesUtils {
         return Pair(iv, encrypted)
     }
 
-    fun decrypt(iv: ByteArray, encryptedData: ByteArray, aesKey: SecretKey): ByteArray {
+    fun decrypt(iv: ByteArray, ciphertext: ByteArray, tag: ByteArray, aesKey: SecretKey): ByteArray {
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-        cipher.init(Cipher.DECRYPT_MODE, aesKey, GCMParameterSpec(128, iv))
-        return cipher.doFinal(encryptedData)
+        val spec = GCMParameterSpec(128, iv)
+        cipher.init(Cipher.DECRYPT_MODE, aesKey, spec)
+        val encryptedWithTag = ciphertext + tag // склеиваем обратно для OpenSSL
+        return cipher.doFinal(encryptedWithTag)
     }
 
     fun keyFromBytes(keyBytes: ByteArray): SecretKey {

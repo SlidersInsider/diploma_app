@@ -2,6 +2,7 @@ package com.mzhadan.app.network.repository.files
 
 import com.mzhadan.app.network.api.FilesApi
 import com.mzhadan.app.network.models.ApiResponse
+import com.mzhadan.app.network.models.files.DownloadFileResponse
 import com.mzhadan.app.network.models.files.FileResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,7 +38,7 @@ class FilesRepositoryImpl @Inject constructor(
         return removeFile(fileId)
     }
 
-    override suspend fun downloadFile(fileId: Int, userId: Int, privateKey: String): Response<ResponseBody> {
-        return filesApi.downloadFile(fileId, userId, privateKey)
+    override suspend fun downloadFile(fileId: Int, userId: Int): Response<DownloadFileResponse> {
+        return filesApi.downloadFile(fileId, userId)
     }
 }

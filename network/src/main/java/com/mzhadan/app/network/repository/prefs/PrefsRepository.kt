@@ -13,4 +13,10 @@ interface PrefsRepository {
     fun saveUID(uid: Int)
     fun getUID(): Int?
     fun isUserUidedIn(): Boolean
+
+    fun saveAlias(alias: String)
+    fun getAlias(): String?
+
+    fun saveRoleId(roleId: Int)
+    fun getRoleId(): Int
 }

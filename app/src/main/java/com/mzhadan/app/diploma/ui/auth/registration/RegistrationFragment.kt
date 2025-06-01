@@ -3,12 +3,14 @@ package com.mzhadan.app.diploma.ui.auth.registration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.mzhadan.app.diploma.crypto.CryptoManager
 import com.mzhadan.app.diploma.databinding.FragmentRegistrationBinding
 import com.mzhadan.app.diploma.ui.auth.AuthViewModel
 import com.mzhadan.app.diploma.ui.navigation.ScreenNavigator
@@ -53,10 +55,15 @@ class RegistrationFragment : Fragment() {
                 val username = usernameEditText.text.toString()
                 val password = passwordEditText.text.toString()
 
-                authViewModel.register(username, password, 3,
+                val alias = "${username}_rsa_key_pair"
+                CryptoManager.generateRsaKeyPair(alias)
+                val publicKey = CryptoManager.getPublicKey(alias)
+                val publicKeyEncoded = Base64.encodeToString(publicKey.encoded, Base64.NO_WRAP)
+
+                authViewModel.register(username, password, 2, publicKeyEncoded, alias,
                     onSuccess = {
                         ScreenNavigator.reopenLoginScreen()
-                        Toast.makeText(requireContext(), "Вход успешен!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Успешно зарегистрирован!", Toast.LENGTH_SHORT).show()
                     },
                     onError = { message ->
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
