@@ -14,6 +14,7 @@ import com.mzhadan.app.diploma.ui.pages.projects.ProjectsFragment
 import com.mzhadan.app.diploma.ui.pages.viewers.pdf.PdfViewerFragment
 import com.mzhadan.app.diploma.ui.pages.viewers.txt.TxtViewerFragment
 import com.mzhadan.app.diploma.ui.pages.viewers.word.WordViewerFragment
+import java.security.PublicKey
 
 object ScreenNavigator {
     private var fragmentNavigator: FragmentTransactionWrapper? = null
@@ -85,10 +86,12 @@ object ScreenNavigator {
         fragmentNavigator?.replaceFragment(createProjectFragment!!, "CreateProjectFragment")
     }
 
-    fun openTxtViewerScreen(filePath: String) {
+    fun openTxtViewerScreen(filePath: String, fileId: Int, publicKey: String) {
         txtViewerFragment = TxtViewerFragment().apply {
             val bundle = Bundle()
             bundle.putString("path", filePath)
+            bundle.putInt("fileId", fileId)
+            bundle.putString("publicKey", publicKey)
             arguments = bundle
         }
         fragmentNavigator?.replaceFragment(txtViewerFragment!!, "TxtViewerFragment")

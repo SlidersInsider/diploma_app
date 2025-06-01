@@ -94,7 +94,7 @@ class ProjectInfoFragment : Fragment() {
             override fun onFileDownloadClicked(file: FileResponse) {
                 projectInfoViewModel.downloadFile(requireContext(), file.id, onSuccess = { path ->
                     when(getExtension(file.filename)) {
-                        "txt" -> ScreenNavigator.openTxtViewerScreen(path)
+                        "txt" -> ScreenNavigator.openTxtViewerScreen(path, file.id, file.encryption_key)
                         "pdf" -> ScreenNavigator.openPdfViewerScreen(path)
                         "docx" -> ScreenNavigator.openWordViewerScreen(path)
                     }

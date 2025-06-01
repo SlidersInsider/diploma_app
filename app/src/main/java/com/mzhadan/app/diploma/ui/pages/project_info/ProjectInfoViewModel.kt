@@ -100,19 +100,11 @@ class ProjectInfoViewModel @Inject constructor(
         val inputStream = contentResolver.openInputStream(uri) ?: return
         val fileName = getFileNameFromUri(contentResolver, uri) ?: "file"
 
-        // Генерация AES-ключа
         val aesKey = AesUtils.generateAesKey()
-
-        // Шифруем файл
         val (iv, encryptedData) = FileCryptoUtils.encryptFile(inputStream, aesKey)
-
-
         val combinedData = iv + encryptedData
-
-        // Шифруем AES-ключ RSA-ключом
         val encryptedKey = RsaUtils.encryptKey(aesKey.encoded, publicKey)
 
-        // Готовим multipart-запрос
         val requestFile = combinedData.toRequestBody("application/octet-stream".toMediaTypeOrNull())
         val multipart = MultipartBody.Part.createFormData("file", fileName, requestFile)
 

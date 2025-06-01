@@ -20,4 +20,5 @@ interface FilesRepository {
     ): Response<ApiResponse>
     suspend fun removeFile(fileId: Int): Response<ApiResponse>
     suspend fun downloadFile(fileId: Int, userId: Int): Response<DownloadFileResponse>
+    suspend fun updateFile(fileId: Int, file: MultipartBody.Part): Response<ApiResponse>
 }

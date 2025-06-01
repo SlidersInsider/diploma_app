@@ -1,6 +1,5 @@
 package com.mzhadan.app.diploma.crypto
 
-import android.util.Log
 import java.io.File
 import java.io.InputStream
 import javax.crypto.SecretKey

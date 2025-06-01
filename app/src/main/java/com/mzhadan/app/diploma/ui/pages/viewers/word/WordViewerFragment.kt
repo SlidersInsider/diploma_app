@@ -26,8 +26,8 @@ class WordViewerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        path = arguments?.getString("path") ?: return
-        binding.filenameTV.text = path ?: "Файл не найден"
+        path = arguments?.getString("path")
+        binding.filenameTV.text = path?.substringAfterLast("/")
 
         webView = WebView(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(

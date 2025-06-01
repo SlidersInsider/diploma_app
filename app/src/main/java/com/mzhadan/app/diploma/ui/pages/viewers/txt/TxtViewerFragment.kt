@@ -8,14 +8,18 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.mzhadan.app.diploma.databinding.FragmentTxtViewerBinding
 import com.mzhadan.app.reader.TxtWorker
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.IOException
 
+@AndroidEntryPoint
 class TxtViewerFragment : Fragment() {
     private lateinit var binding: FragmentTxtViewerBinding
     private lateinit var editText: EditText
+    private val txtViewerViewModel: TxtViewerViewModel by viewModels()
 
     private var isEditing = false
 
@@ -29,7 +33,9 @@ class TxtViewerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val path = arguments?.getString("path") ?: return
-        binding.filenameTV.text = path
+        val fileId = arguments?.getInt("fileId") ?: return
+        val publicKey = arguments?.getString("publicKey") ?: return
+        binding.filenameTV.text = path.substringAfterLast("/")
 
         editText = EditText(requireContext()).apply {
             layoutParams = FrameLayout.LayoutParams(
@@ -39,6 +45,7 @@ class TxtViewerFragment : Fragment() {
             isFocusable = false
             isFocusableInTouchMode = false
             isSingleLine = false
+            background = null
             setPadding(16, 16, 16, 16)
         }
         binding.contentContainer.addView(editText)
@@ -59,13 +66,16 @@ class TxtViewerFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             try {
                 TxtWorker.writeToFile(path, editText.text.toString())
-                Toast.makeText(requireContext(), "Файл сохранен!", Toast.LENGTH_SHORT).show()
-                requireActivity().supportFragmentManager.popBackStack()
-                val file = File(path)
-                if (file.exists()) {
-                    file.delete()
-                }
-
+                txtViewerViewModel.updateFile(fileId, path, publicKey, onSuccess = {
+                    Toast.makeText(requireContext(), "Файл сохранен!", Toast.LENGTH_SHORT).show()
+                    requireActivity().supportFragmentManager.popBackStack()
+                    val file = File(path)
+                    if (file.exists()) {
+                        file.delete()
+                    }
+                }, onError = { error ->
+                    Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                })
             } catch (e: IOException) {
                 Toast.makeText(requireContext(), "Ошибка сохранения файла", Toast.LENGTH_SHORT).show()
             }

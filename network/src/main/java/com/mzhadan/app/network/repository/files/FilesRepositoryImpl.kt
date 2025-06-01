@@ -41,4 +41,8 @@ class FilesRepositoryImpl @Inject constructor(
     override suspend fun downloadFile(fileId: Int, userId: Int): Response<DownloadFileResponse> {
         return filesApi.downloadFile(fileId, userId)
     }
+
+    override suspend fun updateFile(fileId: Int, file: MultipartBody.Part): Response<ApiResponse> {
+        return filesApi.updateFile(fileId, file)
+    }
 }

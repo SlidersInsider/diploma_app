@@ -9,7 +9,6 @@ import com.mzhadan.app.reader.PdfWorker
 import java.io.File
 
 class PdfViewerFragment : Fragment() {
-
     private lateinit var binding: FragmentPdfViewerBinding
     private var pdfRendererManager: PdfWorker? = null
     private var pageIndex = 0
@@ -24,7 +23,7 @@ class PdfViewerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val path = arguments?.getString("path") ?: return
-        binding.filenameTV.text = path
+        binding.filenameTV.text = path.substringAfterLast("/")
 
         try {
             val file = File(path)

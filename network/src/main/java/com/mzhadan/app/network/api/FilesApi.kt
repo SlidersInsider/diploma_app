@@ -13,6 +13,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Streaming
@@ -45,4 +46,11 @@ interface FilesApi {
         @Path("file_id") fileId: Int,
         @Field("user_id") userId: Int
     ): Response<DownloadFileResponse>
+
+    @Multipart
+    @PUT("files/update-file/{file_id}")
+    suspend fun updateFile(
+        @Path("file_id") fileId: Int,
+        @Part file: MultipartBody.Part
+    ): Response<ApiResponse>
 }
