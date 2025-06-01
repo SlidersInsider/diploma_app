@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mzhadan.app.diploma.databinding.FragmentTxtViewerBinding
 import com.mzhadan.app.reader.TxtWorker
+import java.io.File
 import java.io.IOException
 
 class TxtViewerFragment : Fragment() {
@@ -56,14 +57,17 @@ class TxtViewerFragment : Fragment() {
         }
 
         binding.btnSave.setOnClickListener {
-            if (isEditing) {
-                try {
-                    TxtWorker.writeToFile(path, editText.text.toString())
-                    // отправка запроса на обновление файла
-                    Toast.makeText(requireContext(), "Файл сохранен!", Toast.LENGTH_SHORT).show()
-                } catch (e: IOException) {
-                    Toast.makeText(requireContext(), "Ошибка сохранения файла", Toast.LENGTH_SHORT).show()
+            try {
+                TxtWorker.writeToFile(path, editText.text.toString())
+                Toast.makeText(requireContext(), "Файл сохранен!", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
+                val file = File(path)
+                if (file.exists()) {
+                    file.delete()
                 }
+
+            } catch (e: IOException) {
+                Toast.makeText(requireContext(), "Ошибка сохранения файла", Toast.LENGTH_SHORT).show()
             }
         }
     }

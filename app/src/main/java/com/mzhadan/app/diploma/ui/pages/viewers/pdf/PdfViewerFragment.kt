@@ -23,17 +23,15 @@ class PdfViewerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val path = arguments?.getString("path")
+        val path = arguments?.getString("path") ?: return
         binding.filenameTV.text = path
 
-        if (path != null) {
-            try {
-                val file = File(path)
-                pdfRendererManager = PdfWorker(requireContext(), file)
-                showPage(pageIndex)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Ошибка открытия PDF", Toast.LENGTH_SHORT).show()
-            }
+        try {
+            val file = File(path)
+            pdfRendererManager = PdfWorker(requireContext(), file)
+            showPage(pageIndex)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Ошибка открытия PDF", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnNextPage.setOnClickListener {
@@ -54,6 +52,10 @@ class PdfViewerFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+            val file = File(path!!)
+            if (file.exists()) {
+                file.delete()
+            }
         }
     }
 

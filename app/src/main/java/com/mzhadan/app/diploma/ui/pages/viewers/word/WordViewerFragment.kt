@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mzhadan.app.diploma.databinding.FragmentWordViewerBinding
 import com.mzhadan.app.reader.DocxWorker
+import java.io.File
 
 class WordViewerFragment : Fragment() {
     private lateinit var binding: FragmentWordViewerBinding
@@ -25,7 +26,7 @@ class WordViewerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        path = arguments?.getString("path")
+        path = arguments?.getString("path") ?: return
         binding.filenameTV.text = path ?: "Файл не найден"
 
         webView = WebView(requireContext()).apply {
@@ -41,6 +42,10 @@ class WordViewerFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+            val file = File(path!!)
+            if (file.exists()) {
+                file.delete()
+            }
         }
 
         path?.let {
