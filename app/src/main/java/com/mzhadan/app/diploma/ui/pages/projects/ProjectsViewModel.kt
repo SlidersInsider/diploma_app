@@ -25,21 +25,33 @@ class ProjectsViewModel @Inject constructor(
     private val _projects = MutableLiveData<List<ProjectResponse>>()
     val projects: LiveData<List<ProjectResponse>> get() = _projects
 
-    fun getAllProjects() {
+    fun getAllProjects(onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = projectsRepository.getProjects()
-            if (response.isSuccessful) {
-                _projects.postValue(response.body())
+            try {
+                val response = projectsRepository.getProjects()
+                if (response.isSuccessful) {
+                    _projects.postValue(response.body())
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    onError("Ошибка: $e")
+                }
             }
         }
     }
 
-    fun joinProject(projectId: Int, onSuccess: () -> Unit) {
+    fun joinProject(projectId: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = usersProjectsRepository.addUserToProject(UserProject(user_id = prefsRepository.getUID()!!, project_id = projectId))
-            if (response.isSuccessful) {
+            try {
+                val response = usersProjectsRepository.addUserToProject(UserProject(user_id = prefsRepository.getUID()!!, project_id = projectId))
+                if (response.isSuccessful) {
+                    withContext(Dispatchers.Main) {
+                        onSuccess()
+                    }
+                }
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    onSuccess()
+                    onError("Ошибка: $e")
                 }
             }
         }

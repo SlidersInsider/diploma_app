@@ -37,11 +37,11 @@ class AuthViewModel @Inject constructor(
                 }
             } catch (e: HttpException) {
                 withContext(Dispatchers.Main) {
-                    onError("Ошибка сети: ${e.message}")
+                    onError("Ошибка сети: $e")
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    onError("Неизвестная ошибка: ${e.localizedMessage}")
+                    onError("Ошибка: $e")
                 }
             }
         }
@@ -71,11 +71,11 @@ class AuthViewModel @Inject constructor(
                 }
             } catch (e: HttpException) {
                 withContext(Dispatchers.Main) {
-                    onError("Ошибка сети: ${e.message}")
+                    onError("Ошибка сети: $e")
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    onError("Неизвестная ошибка: ${e.localizedMessage}")
+                    onError("Ошибка: $e")
                 }
             }
         }

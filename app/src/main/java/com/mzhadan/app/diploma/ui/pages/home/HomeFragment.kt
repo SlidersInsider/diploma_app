@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +33,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mainViewModel.updateBottomNavigationBarVisibility(View.VISIBLE)
         if (!homeViewModel.isUserUidedIn()) {
-            homeViewModel.getUserByName()
+            homeViewModel.getUserByName(onError = { error ->
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+            })
         }
 
         setupProjectsAdapter()
@@ -48,7 +51,9 @@ class HomeFragment : Fragment() {
             }
         }
 
-        homeViewModel.getAllProjects()
+        homeViewModel.getAllProjects(onError = { error ->
+            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun setupProjectsAdapter() {

@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Base64
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,11 +35,17 @@ class ProjectInfoViewModel @Inject constructor(
     private val _files = MutableLiveData<List<FileResponse>>()
     val files: LiveData<List<FileResponse>> = _files
 
-    fun getFiles(projectId: Int) {
+    fun getFiles(projectId: Int, onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = filesRepository.getFilesByProject(projectId)
-            if (response.isSuccessful) {
-                _files.postValue(response.body())
+            try {
+                val response = filesRepository.getFilesByProject(projectId)
+                if (response.isSuccessful) {
+                    _files.postValue(response.body())
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    onError("Ошибка: $e")
+                }
             }
         }
     }
@@ -81,8 +86,7 @@ class ProjectInfoViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Log.e("ERRRROR", e.toString())
-                    onError("Ошибка: ${e.localizedMessage}")
+                    onError("Ошибка: $e")
                 }
             }
         }
@@ -93,7 +97,7 @@ class ProjectInfoViewModel @Inject constructor(
         uri: Uri,
         projectId: Int,
         onSuccess: () -> Unit,
-        onError: () -> Unit
+        onError: (String) -> Unit
     ) {
         val publicKey = CryptoManager.getPublicKey(prefsRepository.getAlias()!!)
         val contentResolver = context.contentResolver
@@ -116,14 +120,20 @@ class ProjectInfoViewModel @Inject constructor(
             .toRequestBody("text/plain".toMediaTypeOrNull())
 
         viewModelScope.launch(Dispatchers.IO) {
-            val response = filesRepository.addFile(
-                multipart, projectPart, userIdPart, encryptedKeyPart
-            )
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    onSuccess()
-                } else {
-                    onError()
+            try {
+                val response = filesRepository.addFile(
+                    multipart, projectPart, userIdPart, encryptedKeyPart
+                )
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onError("Не получается загрузить файл!")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    onError("Ошибка: $e")
                 }
             }
         }

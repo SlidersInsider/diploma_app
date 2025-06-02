@@ -39,7 +39,7 @@ class CreateProjectViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    onError("Ошибка: ${e.localizedMessage}")
+                    onError("Ошибка: $e")
                 }
             }
         }

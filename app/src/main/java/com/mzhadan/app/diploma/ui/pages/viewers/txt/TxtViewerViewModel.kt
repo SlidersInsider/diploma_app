@@ -60,7 +60,7 @@ class TxtViewerViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    onError("Ошибка: ${e.message}")
+                    onError("Ошибка: $e")
                 }
             }
         }

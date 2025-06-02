@@ -11,6 +11,7 @@ import com.mzhadan.app.network.repository.users.UsersRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,15 +24,21 @@ class HomeViewModel @Inject constructor(
     private val _projects = MutableLiveData<List<ProjectResponse>>()
     val projects: LiveData<List<ProjectResponse>> get() = _projects
 
-    fun getUserByName() {
+    fun getUserByName(onError: (String) -> Unit) {
         val name = prefsRepository.getUsername()
         if (name != null) {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = usersRepository.getUserByUsername(name)
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        prefsRepository.saveUID(response.body()!!.id)
-                        prefsRepository.saveRoleId(2)
+                try {
+                    val response = usersRepository.getUserByUsername(name)
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            prefsRepository.saveUID(response.body()!!.id)
+                            prefsRepository.saveRoleId(2)
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.IO) {
+                        onError("Ошибка: $e")
                     }
                 }
             }
@@ -46,11 +53,17 @@ class HomeViewModel @Inject constructor(
         return prefsRepository.isUserUidedIn()
     }
 
-    fun getAllProjects() {
+    fun getAllProjects(onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = projectsRepository.getProjectsByUser(prefsRepository.getUID()!!)
-            if (response.isSuccessful) {
-                _projects.postValue(response.body())
+            try {
+                val response = projectsRepository.getProjectsByUser(prefsRepository.getUID()!!)
+                if (response.isSuccessful) {
+                    _projects.postValue(response.body())
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.IO) {
+                    onError("Ошибка: $e")
+                }
             }
         }
     }

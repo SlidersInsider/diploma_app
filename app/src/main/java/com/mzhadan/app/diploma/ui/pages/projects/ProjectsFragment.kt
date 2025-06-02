@@ -42,7 +42,9 @@ class ProjectsFragment : Fragment() {
             binding.fabAddProject.visibility = View.GONE
         }
 
-        projectsViewModel.getAllProjects()
+        projectsViewModel.getAllProjects(onError = { error ->
+            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+        })
 
         binding.fabAddProject.setOnClickListener {
             ScreenNavigator.openCreateProjectFragment()
@@ -52,9 +54,11 @@ class ProjectsFragment : Fragment() {
     private fun setupProjectsAdapter() {
         projectsAdapter = ProjectsAdapter(object: ProjectsAdapter.ProjectsViewHolder.Callback {
             override fun onJoinClicked(project: ProjectResponse) {
-                projectsViewModel.joinProject(project.id) {
+                projectsViewModel.joinProject(project.id, onSuccess =  {
                     Toast.makeText(requireContext(), "Запрос отправлен!", Toast.LENGTH_SHORT).show()
-                }
+                }, onError = { error ->
+                    Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                })
             }
         })
     }

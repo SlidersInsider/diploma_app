@@ -39,9 +39,11 @@ class ProjectInfoFragment : Fragment() {
 
             projectInfoViewModel.uploadFile(requireContext(), uri, pid, onSuccess = {
                 Toast.makeText(requireContext(), "Файл успешно загружен!", Toast.LENGTH_SHORT).show()
-                projectInfoViewModel.getFiles(pid)
-            }, onError = {
-                Toast.makeText(requireContext(), "Не получается загрузить файл!", Toast.LENGTH_SHORT).show()
+                projectInfoViewModel.getFiles(pid, onError = { error ->
+                    Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                })
+            }, onError = { error ->
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
             })
         }
     }
@@ -77,7 +79,9 @@ class ProjectInfoFragment : Fragment() {
 
         arguments?.let {
             pid = it.getInt("project_id")
-            projectInfoViewModel.getFiles(pid)
+            projectInfoViewModel.getFiles(pid, onError = { error ->
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+            })
         }
 
         binding.fabAddFile.setOnClickListener {
