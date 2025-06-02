@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
                         }
                     }
                 } catch (e: Exception) {
-                    withContext(Dispatchers.IO) {
+                    withContext(Dispatchers.Main) {
                         onError("Ошибка: $e")
                     }
                 }
@@ -61,7 +61,7 @@ class HomeViewModel @Inject constructor(
                     _projects.postValue(response.body())
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.IO) {
+                withContext(Dispatchers.Main) {
                     onError("Ошибка: $e")
                 }
             }
